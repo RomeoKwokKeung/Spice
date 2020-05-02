@@ -151,25 +151,25 @@
 
             });
 
-            $(".btnOrderStatus").click(function () {
-                var $buttonClicked = $(this);
-                var id = $buttonClicked.attr('data-id');
-                $.ajax({
-                    type: "GET",
-                    url: OrderStatusURL,
-                    contentType: "text/html; charset=utf-8",
-                    data: { "Id": id },
-                    cache: false,
-                    dataType: "html",
-                    success: function (data) {
-                        $('#myOrderStatusContent').html(data);
-                        $('#myOrderStatus').modal('show');
+            //$(".btnOrderStatus").click(function () {
+            //    var $buttonClicked = $(this);
+            //    var id = $buttonClicked.attr('data-id');
+            //    $.ajax({
+            //        type: "GET",
+            //        url: OrderStatusURL,
+            //        contentType: "text/html; charset=utf-8",
+            //        data: { "Id": id },
+            //        cache: false,
+            //        dataType: "html",
+            //        success: function (data) {
+            //            $('#myOrderStatusContent').html(data);
+            //            $('#myOrderStatus').modal('show');
 
-                    },
-                    error: function () {
-                        alert("Dynamic content load failed.");
-                    }
-                });
-            });
+            //        },
+            //        error: function () {
+            //            alert("Dynamic content load failed.");
+            //        }
+            //    });
+            //});
         });</script>
 }
