@@ -8850,19 +8850,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\solom\\.nuget\\packages\\": {}
+    "C:\\Users\\Solomon Yue\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\solom\\source\\repos\\Spice\\Spice\\Spice.csproj",
+      "projectUniqueName": "C:\\Users\\Solomon Yue\\Documents\\GitHub\\Spice\\Spice\\Spice.csproj",
       "projectName": "Spice",
-      "projectPath": "C:\\Users\\solom\\source\\repos\\Spice\\Spice\\Spice.csproj",
-      "packagesPath": "C:\\Users\\solom\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\solom\\source\\repos\\Spice\\Spice\\obj\\",
+      "projectPath": "C:\\Users\\Solomon Yue\\Documents\\GitHub\\Spice\\Spice\\Spice.csproj",
+      "packagesPath": "C:\\Users\\Solomon Yue\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Solomon Yue\\Documents\\GitHub\\Spice\\Spice\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\solom\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Solomon Yue\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -8941,6 +8941,12 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[3.1.2, 3.1.2]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -8949,7 +8955,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.300\\RuntimeIdentifierGraph.json"
       }
     }
   }
