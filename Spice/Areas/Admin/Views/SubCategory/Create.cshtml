@@ -1,4 +1,5 @@
 ﻿@model Spice.Models.ViewModels.SubCategoryAndCategoryViewModel
+@*for drop down view model*@
 @using Spice.Extensions
 
 @{
@@ -13,6 +14,7 @@
 <partial name="_StatusMessage" model="Model.StatusMessage" />
 
 <div class="border backgroundWhite row">
+    @*right side for category and sub category*@
     <div class="col-8 border-right">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -40,6 +42,7 @@
             </div>
         </form>
     </div>
+    @*left sidefor the list of sub category*@
     <div class="col-3 offset-1">
         @if (Model.SubCategoryList.Count() > 0)
         {
@@ -50,17 +53,17 @@
             </div>
         }
     </div>
-
-
-
 </div>
 
 @section Scripts{
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-    <script>function updateSubCategoryList() {
+    <!--call control method-->
+    <script>
+        function updateSubCategoryList() {
             var categorySelected = document.getElementById("ddlCategorylist").value;
 
+            //right side list
             $list = $('#SubCategoryList');
 
             $.ajax({
@@ -68,26 +71,27 @@
                 type: 'GET',
                 dataType: 'text',
                 success: function (data) {
+                    //output data
                     results = JSON.parse(data);
+                    //everying in side dollar list will be empty first
                     $list.html('');
+
                     $list.append(' <ul class="list-group"> ');
                     for (i in results) {
                         $list.append('<li class="list-group-item">' + results[i].text + '</li>');
                     }
                     $list.append('</ul>');
                 }
-
             });
-
         }
 
+        //first time call it (in the first place)
         $(document).ready(function () {
             updateSubCategoryList();
         });
 
+        //second time call it (when we click the dropdown)
         $("#ddlCategorylist").on("change", function () {
             updateSubCategoryList();
         });</script>
-
-
 }

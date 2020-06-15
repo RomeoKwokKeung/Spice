@@ -13,8 +13,10 @@ namespace Spice.Areas.Admin.Controllers
 {
     [Authorize(Roles = SD.ManagerUser)]
     [Area("Admin")]
+
     public class CategoryController : Controller
     {
+        //dependency injection
         private readonly ApplicationDbContext _db;
 
         public CategoryController(ApplicationDbContext db)
@@ -29,6 +31,7 @@ namespace Spice.Areas.Admin.Controllers
         }
 
         //GET - CREATE, empty view so we use IActionResult only
+        //we won't pass anything so we don't need to use async
         public IActionResult Create()
         {
             return View();
@@ -58,6 +61,7 @@ namespace Spice.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+            //can be same as await _db.Category.Where(c => c.Id == id).FirstOrDefaultAsync();
             var category = await _db.Category.FindAsync(id);
             if (category == null)
             {
@@ -90,6 +94,7 @@ namespace Spice.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+            //can be same as await _db.Category.Where(c => c.Id == id).FirstOrDefaultAsync();
             var category = await _db.Category.FindAsync(id);
             if (category == null)
             {
@@ -111,6 +116,7 @@ namespace Spice.Areas.Admin.Controllers
             }
             _db.Category.Remove(category);
             await _db.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 

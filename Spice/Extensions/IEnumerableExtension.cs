@@ -9,6 +9,8 @@ namespace Spice.Extensions
     public static class IEnumerableExtension
     {
         //convert all of the category list object to ienmerable of select list
+        //return IEnumerable<SelectListItem>
+
         public static IEnumerable<SelectListItem> ToSelectListItem<T>(this IEnumerable<T> items, int selectedValue)
         {
             return from item in items

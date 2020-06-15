@@ -8850,19 +8850,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Solomon Yue\\.nuget\\packages\\": {}
+    "C:\\Users\\solom\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Solomon Yue\\Documents\\GitHub\\Spice\\Spice\\Spice.csproj",
+      "projectUniqueName": "C:\\Users\\solom\\Documents\\GitHub\\Spice\\Spice\\Spice.csproj",
       "projectName": "Spice",
-      "projectPath": "C:\\Users\\Solomon Yue\\Documents\\GitHub\\Spice\\Spice\\Spice.csproj",
-      "packagesPath": "C:\\Users\\Solomon Yue\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Solomon Yue\\Documents\\GitHub\\Spice\\Spice\\obj\\",
+      "projectPath": "C:\\Users\\solom\\Documents\\GitHub\\Spice\\Spice\\Spice.csproj",
+      "packagesPath": "C:\\Users\\solom\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\solom\\Documents\\GitHub\\Spice\\Spice\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Solomon Yue\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\solom\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

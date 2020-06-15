@@ -8,6 +8,7 @@ namespace Spice.Models
 {
     public class Category
     {
+        //primary key, not a must. It will set it primary key automatically
         [Key]
         public int Id { get; set; }
 

@@ -17,8 +17,10 @@ namespace Spice.Areas.Admin.Controllers
     [Authorize(Roles = SD.ManagerUser)]
     public class SubCategoryController : Controller
     {
+        //dependency injection
         private readonly ApplicationDbContext _db;
 
+        //Error message
         [TempData]
         public string StatusMessage { get; set; }
 
@@ -30,18 +32,21 @@ namespace Spice.Areas.Admin.Controllers
         //Get INDEX
         public async Task<IActionResult> Index()
         {
+            //get all the sub categories
             var subCategories = await _db.SubCategory.Include(s => s.Category).ToListAsync();
             return View(subCategories);
         }
 
         //GET - CREATE
+        //can initialize the new viewmodel inside (public SubCategoryController(ApplicationDbContext db))
         public async Task<IActionResult> Create()
         {
+            //create View Model Object
             SubCategoryAndCategoryViewModel model = new SubCategoryAndCategoryViewModel()
             {
                 CategoryList = await _db.Category.ToListAsync(),
-                SubCategory = new Models.SubCategory(),
-                //a list of string only
+                SubCategory = new SubCategory(),
+                //a list of string only, so we use Select(p => p.Name)
                 SubCategoryList = await _db.SubCategory.OrderBy(p => p.Name).Select(p => p.Name).Distinct().ToListAsync()
             };
 
@@ -49,6 +54,7 @@ namespace Spice.Areas.Admin.Controllers
         }
 
         //POST - CREATE
+        //can bind SubCategoryAndCategoryViewModel 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(SubCategoryAndCategoryViewModel model)
@@ -69,6 +75,9 @@ namespace Spice.Areas.Admin.Controllers
                     return RedirectToAction(nameof(Index));
                 }
             }
+
+            //if ModelState Is not valid
+            //just pass what we have
             SubCategoryAndCategoryViewModel modelVM = new SubCategoryAndCategoryViewModel()
             {
                 CategoryList = await _db.Category.ToListAsync(),
@@ -94,6 +103,7 @@ namespace Spice.Areas.Admin.Controllers
         }
 
         //GET - EDIT
+        //can bind SubCategoryAndCategoryViewModel 
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -119,6 +129,7 @@ namespace Spice.Areas.Admin.Controllers
         }
 
         //POST - EDIT
+        //can bind SubCategoryAndCategoryViewModel 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(SubCategoryAndCategoryViewModel model)
@@ -143,6 +154,7 @@ namespace Spice.Areas.Admin.Controllers
                     return RedirectToAction(nameof(Index));
                 }
             }
+
             SubCategoryAndCategoryViewModel modelVM = new SubCategoryAndCategoryViewModel()
             {
                 CategoryList = await _db.Category.ToListAsync(),
@@ -150,7 +162,7 @@ namespace Spice.Areas.Admin.Controllers
                 SubCategoryList = await _db.SubCategory.OrderBy(p => p.Name).Select(p => p.Name).ToListAsync(),
                 StatusMessage = StatusMessage
             };
-
+            //avoid Object reference not set to an instance of an object ERROR
             //avoid passing null id
             //modelVM.SubCategory.Id = model.SubCategory.Id;
             return View(modelVM);

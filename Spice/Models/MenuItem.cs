@@ -18,17 +18,22 @@ namespace Spice.Models
         public string Spicyness { get; set; }
         public enum ESpicy { NA = 0, NotSpicy = 1, Spicy = 2, VerySpicy = 3 }
 
+        //store the image on server, so we use string
         public string Image { get; set; }
 
         [Display(Name = "Category")]
         public int CategoryId { get; set; }
 
+        //foreign key should be virtual
+        //for LINQ include statement
         [ForeignKey("CategoryId")]
         public virtual Category Category { get; set; }
 
         [Display(Name = "SubCategory")]
         public int SubCategoryId { get; set; }
 
+        //foreign key should be virtual
+        //for LINQ include statement
         [ForeignKey("SubCategoryId")]
         public virtual SubCategory SubCategory { get; set; }
 

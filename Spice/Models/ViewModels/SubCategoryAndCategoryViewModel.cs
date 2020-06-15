@@ -10,6 +10,7 @@ namespace Spice.Models.ViewModels
         public IEnumerable<Category> CategoryList { get; set; }
         public SubCategory SubCategory { get; set; }
         //can also use <object> instead of <string>
+        //right hand side Sub Category List
         public List<string> SubCategoryList { get; set; }
         public string StatusMessage { get; set; }
     }

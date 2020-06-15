@@ -19,8 +19,11 @@ namespace Spice.Areas.Admin.Controllers
     public class MenuItemController : Controller
     {
         private readonly ApplicationDbContext _db;
+
         //for saving image on the server
+        //core 2.0 = IhostingEnvironment, core 3.0 = IWebHostEnvironment
         private readonly IWebHostEnvironment _hostingEnvironment;
+
         //avoid defining the MenuItem every time on each method such as CategoryController
         [BindProperty]
         public MenuItemViewModel MenuItemVM { get; set; }
@@ -38,6 +41,7 @@ namespace Spice.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index()
         {
+            //get all the item from database and display it on the web
             var menuItems = await _db.MenuItem.Include(m => m.Category).Include(m => m.SubCategory).ToListAsync();
             return View(menuItems);
         }
@@ -64,8 +68,9 @@ namespace Spice.Areas.Admin.Controllers
             await _db.SaveChangesAsync();
 
             //Work on the image saving section
-
+            //wwwroot
             string webRootPath = _hostingEnvironment.WebRootPath;
+            //extract all files which users uploaded
             var files = HttpContext.Request.Form.Files;
 
             var menuItemFromDb = await _db.MenuItem.FindAsync(MenuItemVM.MenuItem.Id);
@@ -73,7 +78,9 @@ namespace Spice.Areas.Admin.Controllers
             if (files.Count > 0)
             {
                 //files has been uploaded
+                //images folder inside wwwroot
                 var uploads = Path.Combine(webRootPath, "images");
+                //only one file can be uploaded so we user 'files[0]'
                 var extension = Path.GetExtension(files[0].FileName);
 
                 //rename the image
@@ -105,6 +112,7 @@ namespace Spice.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+
             //based on the id to pass it to the view model and send it over to the view
             MenuItemVM.MenuItem = await _db.MenuItem.Include(m => m.Category).Include(m => m.SubCategory).SingleOrDefaultAsync(m => m.Id == id);
             MenuItemVM.SubCategory = await _db.SubCategory.Where(s => s.CategoryId == MenuItemVM.MenuItem.CategoryId).ToListAsync();
@@ -215,13 +223,14 @@ namespace Spice.Areas.Admin.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             string webRootPath = _hostingEnvironment.WebRootPath;
+            //get item id
             MenuItem menuItem = await _db.MenuItem.FindAsync(id);
 
             if (menuItem != null)
             {
                 var imagePath = Path.Combine(webRootPath, menuItem.Image.TrimStart('\\'));
 
-                //delete the old image
+                //delete the old image first
                 if (System.IO.File.Exists(imagePath))
                 {
                     System.IO.File.Delete(imagePath);

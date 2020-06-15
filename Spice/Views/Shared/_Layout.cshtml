@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/jquery-ui.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.css" />
+        <!--fortawesome-->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     </environment>
     <environment exclude="Development">
@@ -30,6 +31,7 @@
 </head>
 <body class="search-background">
     <header>
+        @*make it black*@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-area="Customer" asp-controller="Home" asp-action="Index">
@@ -48,6 +50,7 @@
 
                         @if (User.IsInRole(SD.ManagerUser))
                         {
+                            <!--create a drop down, we can check it from bootstrap 4 website-->
                             <li class="nav-item dropdown text-white-50">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropDownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Content Management
@@ -60,7 +63,6 @@
                                     <a class="dropdown-item" asp-action="Index" asp-controller="User" asp-area="Admin">User</a>
 
                                 </div>
-
                             </li>
                         }
 
@@ -124,17 +126,20 @@
         </main>
     </div>
 
+    @*edited*@
     <footer class="border-top pl-3 footer text-white-50" style="background-color:#343a40;">
         <div class="container">
             &copy; 2020 - Spice - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+    <!--TinyMce Plugin-->
     <environment include="Development">
         <script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=n94ifuzvl80pchikopiwgz2esrw8n28dwcywvpejlqrregfp"></script>
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
         <script src="~/js/jquery-ui.js"></script>
     </environment>
+    <!--TinyMce Plugin-->
     <environment exclude="Development">
         <script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=n94ifuzvl80pchikopiwgz2esrw8n28dwcywvpejlqrregfp"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"

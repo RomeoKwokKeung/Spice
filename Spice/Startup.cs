@@ -49,6 +49,7 @@ namespace Spice
             services.Configure<EmailOptions>(Configuration);
 
             services.AddControllersWithViews();
+            //download from nuget package manager - Microsoft AspNetCore Razor RuntimeCompliation
             services.AddRazorPages().AddRazorRuntimeCompilation();
 
             services.AddAuthentication().AddFacebook(facebookOptions =>
@@ -90,6 +91,7 @@ namespace Spice
             app.UseAuthentication();
             app.UseAuthorization();
 
+            //ASP.NET CORE 3.0
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -97,6 +99,8 @@ namespace Spice
                     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+
+            //ASP.NET CORE 2.2
             //app.UseMvc(routes =>
             //{
             //    routes.MapRoute(
