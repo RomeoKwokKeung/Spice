@@ -2,19 +2,21 @@
 
 <br />
 
+<!--Display Coupon-->
 @if (Model.Coupon.ToList().Count > 0)
 {
     <div class="border">
+        <!--change the conpon image every 2.5 seconds-->
         <div class="carousel" data-ride="carousel" data-interval="2500">
             @for (int i = 0; i < Model.Coupon.Count(); i++)
             {
                 if (i == 0)
                 {
-
-
                     <div class="carousel-item active">
                         @{
+                            <!--convert to string format but not using Model.Coupon.ToList()[i]-->
                             var base64 = Convert.ToBase64String(Model.Coupon.ToList()[i].Picture);
+                            <!--convert to jpg-->
                             var imgsrc = string.Format("data:image/jpg;base64,{0}", base64);
                         }
 
@@ -23,6 +25,7 @@
                 }
                 else
                 {
+                    <!--just remove the active inside the div-->
                     <div class="carousel-item">
                         @{
                             var base64 = Convert.ToBase64String(Model.Coupon.ToList()[i].Picture);
@@ -35,7 +38,6 @@
             }
         </div>
     </div>
-
 }
 
 <br />
@@ -43,6 +45,7 @@
 
 <div class="backgroundWhite container">
 
+    <!--filters: Appetizer, Main Course, Desert, Drink-->
     <ul id="menu-filters" class="menu-filter-list list-inline text-center">
         <li class="active btn btn-secondary ml-1 mr-1" data-filter=".menu-restaurant">Show All</li>
 
@@ -52,10 +55,10 @@
         }
     </ul>
 
-
     @foreach (var category in Model.Category)
     {
         <div class="row" id="menu-wrapper">
+            <!--each category will be passed to Thumbnail Partial View-->
             <partial name="_ThumbnailAreaPartial" model="@Model.MenuItem.Where(u=>u.Category.Name.Equals(category.Name))" />
         </div>
     }
@@ -68,15 +71,17 @@
             crossorigin="anonymous"></script>
 
     <script>
-
+        //post from _ThumbnailAreaPartial.cshtml
         var posts = $('.post');
 
+        //every time menu-filters is clicked we can trigger that
         (function ($) {
 
             $("#menu-filters li").click(function () {
                 $("#menu-filters li").removeClass('active btn btn-secondary');
                 $(this).addClass('active btn btn-secondary');
 
+                //toggle
                 var selectedFilter = $(this).data("filter");
 
                 $(".menu-restaurant").fadeOut();
@@ -85,8 +90,6 @@
                     $(selectedFilter).slideDown();
                 }, 300);
             });
-
-
 
         })(jQuery);
 

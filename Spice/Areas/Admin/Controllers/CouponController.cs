@@ -48,7 +48,7 @@ namespace Spice.Areas.Admin.Controllers
                         using (var ms1 = new MemoryStream())
                         {
                             fs1.CopyTo(ms1);
-                            //convert images into a stream byte and sort it in p1 
+                            //convert images into a stream of byte and sort it in p1 
                             p1 = ms1.ToArray();
                         }
                     }
@@ -64,11 +64,14 @@ namespace Spice.Areas.Admin.Controllers
         //GET EDIT Coupon
         public async Task<IActionResult> Edit(int? id)
         {
+            //find the id from database
             if (id == null)
             {
                 return NotFound();
             }
+
             var coupon = await _db.Coupon.Where(c => c.Id == id).FirstOrDefaultAsync();
+
             if (coupon == null)
             {
                 return NotFound();
@@ -86,6 +89,7 @@ namespace Spice.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            //find the id from database
             var couponFromDb = await _db.Coupon.Where(c => c.Id == coupons.Id).FirstOrDefaultAsync();
 
             if (ModelState.IsValid)
@@ -104,6 +108,8 @@ namespace Spice.Areas.Admin.Controllers
                     }
                     couponFromDb.Picture = p1;
                 }
+
+                //cannot use _db.update here becuz we are editing one item only
                 couponFromDb.MinimumAmount = coupons.MinimumAmount;
                 couponFromDb.Name = coupons.Name;
                 couponFromDb.Discount = coupons.Discount;

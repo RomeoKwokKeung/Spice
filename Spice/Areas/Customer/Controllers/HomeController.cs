@@ -19,6 +19,7 @@ namespace Spice.Controllers
     [Area("Customer")]
     public class HomeController : Controller
     {
+        //dependency injection
         private readonly ApplicationDbContext _db;
 
         public HomeController(ApplicationDbContext db)
@@ -28,6 +29,7 @@ namespace Spice.Controllers
 
         public async Task<IActionResult> Index()
         {
+            //initialize the new ViewModel
             IndexViewModel IndexVM = new IndexViewModel()
             {
                 MenuItem = await _db.MenuItem.Include(m => m.Category).Include(m => m.SubCategory).ToListAsync(),
