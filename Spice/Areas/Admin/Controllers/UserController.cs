@@ -15,6 +15,7 @@ namespace Spice.Areas.Admin.Controllers
     [Authorize(Roles = SD.ManagerUser)]
     public class UserController : Controller
     {
+        //dependency injection
         private readonly ApplicationDbContext _db;
 
         public UserController(ApplicationDbContext db)
@@ -24,6 +25,7 @@ namespace Spice.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index()
         {
+            //get identity of user that we are using
             var claimsIdentity = (ClaimsIdentity)this.User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 

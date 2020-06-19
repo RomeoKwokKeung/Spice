@@ -49,9 +49,10 @@ namespace Spice.Controllers
             return View(IndexVM);
         }
 
-        [Authorize]
+        [Authorize] //only for Details method but not include Index method
         public async Task<IActionResult> Details(int id)
         {
+            //get the item from database
             var menuItemFromDb = await _db.MenuItem.Include(m => m.Category).Include(m => m.SubCategory).Where(m => m.Id == id).FirstOrDefaultAsync();
 
             ShoppingCart cartObj = new ShoppingCart()
@@ -64,7 +65,7 @@ namespace Spice.Controllers
         }
 
         //Shopping Cart function
-        [Authorize]
+        [Authorize] //only for Details method but not include Index method
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Details(ShoppingCart CartObject)

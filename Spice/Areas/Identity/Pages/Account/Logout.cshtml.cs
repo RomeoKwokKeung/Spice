@@ -40,6 +40,7 @@ namespace Spice.Areas.Identity.Pages.Account
             }
             else
             {
+                //avoid error
                 return RedirectToPage("Logout");
             }
         }

@@ -78,15 +78,18 @@ namespace Spice.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            //radio button
             string role = Request.Form["rdUserRole"].ToString();
 
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
+                //IdentityUser => ApplicationUser
                 var user = new ApplicationUser
                 {
                     UserName = Input.Email,
                     Email = Input.Email,
+                    //properties from are new
                     Name = Input.Name,
                     City = Input.City,
                     StreetAddress = Input.StreetAddress,
@@ -94,10 +97,12 @@ namespace Spice.Areas.Identity.Pages.Account
                     PostalCode = Input.PostalCode,
                     PhoneNumber = Input.PhoneNumber
                 };
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
+
                 if (result.Succeeded)
                 {
-
+                    //assign role
                     if (role == SD.KitchenUser)
                     {
                         await _userManager.AddToRoleAsync(user, SD.KitchenUser);
@@ -117,12 +122,13 @@ namespace Spice.Areas.Identity.Pages.Account
                             else
                             {
                                 await _userManager.AddToRoleAsync(user, SD.CustomerEndUser);
+                                //login
                                 await _signInManager.SignInAsync(user, isPersistent: false);
                                 return LocalRedirect(returnUrl);
                             }
                         }
                     }
-
+                    //go to Index Action, User Controller, Admin Area
                     return RedirectToAction("Index", "User", new { area = "Admin" });
 
                     //_logger.LogInformation("User created a new account with password.");

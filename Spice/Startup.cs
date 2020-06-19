@@ -37,6 +37,7 @@ namespace Spice
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
+            //on Register page, we add roles
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();

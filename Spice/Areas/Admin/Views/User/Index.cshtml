@@ -13,6 +13,7 @@
             <h2 class="text-info"> Users List</h2>
         </div>
         <div class="col-6 text-right">
+            <!--go to Identity area to find the page => Register-->
             <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-info"><i class="fas fa-plus"></i> &nbsp; New Employee Registeration</a>
         </div>
     </div>
@@ -48,6 +49,7 @@
                         </td>
                         <td>
 
+                            <!--lock user-->
                             @if (item.LockoutEnd == null || item.LockoutEnd < DateTime.Now)
                             {
                                 <a class="btn btn-success text-white" asp-action="Lock" asp-route-id="@item.Id">

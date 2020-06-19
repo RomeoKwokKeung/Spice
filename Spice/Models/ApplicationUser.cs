@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Spice.Models
 {
+    //have to inherit from IdentityUser
     public class ApplicationUser:IdentityUser
     {
         public string Name { get; set; }
