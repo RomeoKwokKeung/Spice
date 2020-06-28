@@ -1,11 +1,9 @@
 ﻿@model Spice.Models.ViewModels.OrderDetailsViewModel
 @using Spice.Utility
-@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
 
 <form asp-action="OrderPickup" asp-controller="Order" asp-route-orderId="@Model.OrderHeader.Id" method="post">
     <div class="container row border ml-1 backgroundWhiteBorder10Padding" style="width:100%">
+        <!--left side-->
         <div class="col-lg-8 col-12" style="border-right:1px solid #bbb9b9">
             <br />
             <input type="hidden" asp-for="OrderHeader.Id" />
@@ -60,8 +58,7 @@
             </div>
         </div>
 
-
-
+        <!--right side-->
         <div class="col-lg-4 col-12">
             <h4 class="d-flex justify-content-between align-content-center mb-3">
                 <span class="text-muted">Order ID: </span>

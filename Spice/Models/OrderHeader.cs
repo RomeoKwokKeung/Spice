@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Spice.Models
 {
+    //head include important information
     public class OrderHeader
     {
         [Key]

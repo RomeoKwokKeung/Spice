@@ -44,6 +44,8 @@ namespace Spice
 
             services.AddScoped<IDbInitializer, DbInitializer>();
 
+            //for stripe payment
+            //also need to install Stripe.Net though NuGet Package Manager
             services.Configure<StripeSettings>(Configuration.GetSection("Stripe"));
 
             services.AddSingleton<IEmailSender, EmailSender>();
@@ -81,13 +83,20 @@ namespace Spice
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseSession();
             app.UseRouting();
 
+            //ASP.NET CORE 3.0
+            //for stripe payment 
             StripeConfiguration.ApiKey = Configuration.GetSection("Stripe")["SecretKey"];
+
+            //ASP.NET CORE 2.2 version
+            //StripeConfiguration.SetApiKey(Configuration.GetSection("Stripe")["SecretKey"]);
+
             dbInitializer.Initialize();
             app.UseAuthentication();
             app.UseAuthorization();

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace Spice.Models.ViewModels
 {
+    //Order Controller
     public class OrderDetailsViewModel
     {
         public OrderHeader OrderHeader { get; set; }

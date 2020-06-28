@@ -20,6 +20,7 @@ namespace Spice.ViewComponenets
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
+            //find current user id
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 

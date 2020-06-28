@@ -7,6 +7,7 @@ namespace Spice.Utility
 {
     public class StripeSettings
     {
+        //for stripe payment
         public string SecretKey { get; set; }
         public string PublishableKey { get; set; }
     }

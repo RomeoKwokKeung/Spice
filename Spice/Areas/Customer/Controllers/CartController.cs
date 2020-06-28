@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Spice.Data;
 using Spice.Models;
 using Spice.Models.ViewModels;
@@ -19,9 +20,11 @@ namespace Spice.Areas.Customer.Controllers
     [Area("Customer")]
     public class CartController : Controller
     {
+        //dependency injection
         private readonly ApplicationDbContext _db;
         private readonly IEmailSender _emailSender;
 
+        //viewModel
         [BindProperty]
         public OrderDetailsCart detailCart { get; set; }
 
@@ -33,9 +36,10 @@ namespace Spice.Areas.Customer.Controllers
 
         public async Task<IActionResult> Index()
         {
+            //initilize the viewModel
             detailCart = new OrderDetailsCart()
             {
-                OrderHeader = new Models.OrderHeader()
+                OrderHeader = new OrderHeader()
             };
 
             detailCart.OrderHeader.OrderTotal = 0;
@@ -55,6 +59,7 @@ namespace Spice.Areas.Customer.Controllers
             {
                 list.MenuItem = await _db.MenuItem.FirstOrDefaultAsync(m => m.Id == list.MenuItemId);
                 detailCart.OrderHeader.OrderTotal = detailCart.OrderHeader.OrderTotal + (list.MenuItem.Price * list.Count);
+
                 list.MenuItem.Description = SD.ConvertToRawHtml(list.MenuItem.Description);
                 // i just want the first 100 characters, no html tag
                 if (list.MenuItem.Description.Length > 100)
@@ -70,6 +75,7 @@ namespace Spice.Areas.Customer.Controllers
             {
                 detailCart.OrderHeader.CouponCode = HttpContext.Session.GetString(SD.ssCouponCode);
                 var couponFromDb = await _db.Coupon.Where(c => c.Name == detailCart.OrderHeader.CouponCode.ToLower()).FirstOrDefaultAsync();
+                //calculate the total
                 detailCart.OrderHeader.OrderTotal = SD.DiscountedPrice(couponFromDb, detailCart.OrderHeader.OrderTotalOriginal);
             }
 
@@ -80,7 +86,7 @@ namespace Spice.Areas.Customer.Controllers
         {
             detailCart = new OrderDetailsCart()
             {
-                OrderHeader = new Models.OrderHeader()
+                OrderHeader = new OrderHeader()
             };
 
             detailCart.OrderHeader.OrderTotal = 0;
@@ -111,6 +117,7 @@ namespace Spice.Areas.Customer.Controllers
             detailCart.OrderHeader.PhoneNumber = applicationUser.PhoneNumber;
             detailCart.OrderHeader.PickUpTime = DateTime.Now;
 
+            //if there is a coupon code
             if (HttpContext.Session.GetString(SD.ssCouponCode) != null)
             {
                 detailCart.OrderHeader.CouponCode = HttpContext.Session.GetString(SD.ssCouponCode);
@@ -122,15 +129,19 @@ namespace Spice.Areas.Customer.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [ActionName("Summary")]
         public async Task<IActionResult> SummaryPost(string stripeToken)
         {
+            //find the current user id
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
-
+            //retrieve all the shopping cart
             detailCart.listCart = await _db.ShoppingCart.Where(c => c.ApplicationUserId == claim.Value).ToListAsync();
 
+            //modify the detailCart
+            //have not processed any payment yet
             detailCart.OrderHeader.PaymentStatus = SD.PaymentStatusPending;
             detailCart.OrderHeader.OrderDate = DateTime.Now;
             detailCart.OrderHeader.UserId = claim.Value;
@@ -138,11 +149,12 @@ namespace Spice.Areas.Customer.Controllers
             detailCart.OrderHeader.PickUpTime = Convert.ToDateTime(detailCart.OrderHeader.PickUpDate.ToShortDateString() + " " + detailCart.OrderHeader.PickUpTime.ToShortTimeString());
 
             List<OrderDetails> orderDetailsList = new List<OrderDetails>();
+
+            //we need OrderHeader Id to put data in OrderDetails so we need to add it first
             _db.OrderHeader.Add(detailCart.OrderHeader);
             await _db.SaveChangesAsync();
 
             detailCart.OrderHeader.OrderTotalOriginal = 0;
-
 
             foreach (var item in detailCart.listCart)
             {
@@ -158,9 +170,9 @@ namespace Spice.Areas.Customer.Controllers
                 };
                 detailCart.OrderHeader.OrderTotalOriginal += orderDetails.Count * orderDetails.Price;
                 _db.OrderDetails.Add(orderDetails);
-
             }
 
+            //before we input to database we need to compute the order total
             if (HttpContext.Session.GetString(SD.ssCouponCode) != null)
             {
                 detailCart.OrderHeader.CouponCode = HttpContext.Session.GetString(SD.ssCouponCode);
@@ -173,19 +185,21 @@ namespace Spice.Areas.Customer.Controllers
             }
             detailCart.OrderHeader.CouponCodeDiscount = detailCart.OrderHeader.OrderTotalOriginal - detailCart.OrderHeader.OrderTotal;
 
+            //before we input to database we remove everything in session
             _db.ShoppingCart.RemoveRange(detailCart.listCart);
             HttpContext.Session.SetInt32(SD.ssShoppingCartCount, 0);
             await _db.SaveChangesAsync();
 
-            //Payment
+            //payment transaction
             var options = new ChargeCreateOptions
             {
                 Amount = Convert.ToInt32(detailCart.OrderHeader.OrderTotal * 100),
                 Currency = "usd",
                 Description = "Order ID : " + detailCart.OrderHeader.Id,
                 Source = stripeToken
-
             };
+
+            //make a charge
             var service = new ChargeService();
             Charge charge = service.Create(options);
 
@@ -211,8 +225,11 @@ namespace Spice.Areas.Customer.Controllers
                 detailCart.OrderHeader.PaymentStatus = SD.PaymentStatusRejected;
             }
 
+            //after modfied the status
             await _db.SaveChangesAsync();
-            return RedirectToAction("Index", "Home");
+
+            return RedirectToAction("Confirm", "Order", new { id = detailCart.OrderHeader.Id });
+            //return RedirectToAction("Index", "Home");
         }
 
 
@@ -222,6 +239,7 @@ namespace Spice.Areas.Customer.Controllers
             {
                 detailCart.OrderHeader.CouponCode = "";
             }
+
             HttpContext.Session.SetString(SD.ssCouponCode, detailCart.OrderHeader.CouponCode);
 
             return RedirectToAction(nameof(Index));

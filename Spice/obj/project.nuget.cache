@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Mvaw7wlyXlUq6W58fSD2IIepuiSV9tRN3sxvF7i0RzGl4yHBShM2q7a+LaSIv3ZmyIJY2cCCiXMaic7S/jvisw==",
+  "dgSpecHash": "J3fQvIyso9fkeTgJm84CevXd5xPw3xxrJQ5NSPlo5d+EsBfLPVnJGTWRk3CoH4lt2I1SVFo1HjrB6nct2Zjscg==",
   "success": true,
   "projectFilePath": "C:\\Users\\solom\\Documents\\GitHub\\Spice\\Spice\\Spice.csproj",
   "expectedPackageFiles": [
@@ -173,8 +173,7 @@
     "C:\\Users\\solom\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\solom\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
     "C:\\Users\\solom\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
-    "C:\\Users\\solom\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512",
-    "C:\\Users\\solom\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.2\\microsoft.aspnetcore.app.ref.3.1.2.nupkg.sha512"
+    "C:\\Users\\solom\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512"
   ],
   "logs": []
 }

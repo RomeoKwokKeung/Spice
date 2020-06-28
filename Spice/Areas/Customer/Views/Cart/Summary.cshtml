@@ -1,7 +1,7 @@
 ﻿@model Spice.Models.ViewModels.OrderDetailsCart
-@using Microsoft.Extensions.Options
 
-@inject IOptions<Spice.Utility.StripeSettings> Stripe
+@using Microsoft.Extensions.Options <!--stripe-->
+@inject IOptions<Spice.Utility.StripeSettings> Stripe 
 
 @{
     ViewData["Title"] = "Index";
@@ -117,9 +117,11 @@
                         <div class="row">
                             <div class="col-12 col-md-4 offset-md-8">
 
+                                <!--Stripe, default is cent so we x 100-->
                                 @{
                                     var OrderTotalForStrip = Model.OrderHeader.OrderTotal * 100;
                                 }
+                                <!--transaction, can find the example on stripe website (checkout/webforms)-->
                                 <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                                         data-key="@Stripe.Value.PublishableKey"
                                         data-amount="@OrderTotalForStrip"
@@ -130,6 +132,7 @@
                                         data-allow-remember-me="false"
                                         data-image="https://stripe.com/img/documentation/checkout/marketplace.png">
                                 </script>
+                                <!--hide the default stripe button-->
                                 <script>
                                     document.getElementsByClassName("stripe-button-el")[0].style.display = 'none';
                                 </script>
@@ -158,14 +161,9 @@
             if (getTimeFromCurrentDate() >= "20.00") {
                 minDt = 1;
             }
-
-
             $("#datepicker").datepicker({ minDate: minDt, maxDate: "+1W" });
             $("#timepicker").timepicker({ 'minTime': '11:00 AM', 'maxTime': '9:00 PM', step: '30' })
         });
-
-
-
 
         function setPickUpTime() {
             var dateSelected = document.getElementById("datepicker").value;
@@ -181,9 +179,7 @@
             }
 
             $('#timepicker').timepicker('option', 'minTime', selectedTime);
-
         }
-
 
         function getTimeFromCurrentDate() {
             var curDt = new Date();

@@ -19,6 +19,7 @@ namespace Spice.Areas.Customer.Controllers
     [Area("Customer")]
     public class OrderController : Controller
     {
+        //dependency injection
         private readonly IEmailSender _emailSender;
         private readonly ApplicationDbContext _db;
         //only 2 records will be pasted on each page
@@ -32,6 +33,7 @@ namespace Spice.Areas.Customer.Controllers
         [Authorize]
         public async Task<IActionResult> Confirm(int id)
         {
+            //get the current user id
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
@@ -76,10 +78,12 @@ namespace Spice.Areas.Customer.Controllers
             }
 
             var count = orderListVM.Orders.Count;
+            //only want first two record each page
             orderListVM.Orders = orderListVM.Orders.OrderByDescending(p => p.OrderHeader.Id)
                                  .Skip((productPage - 1) * PageSize)
                                  .Take(PageSize).ToList();
 
+            //set the properties
             orderListVM.PagingInfo = new PagingInfo
             {
                 CurrentPage = productPage,
@@ -92,12 +96,14 @@ namespace Spice.Areas.Customer.Controllers
         }
 
         [Authorize(Roles = SD.KitchenUser + "," + SD.ManagerUser)]
-        public async Task<IActionResult> ManageOrder(int productPage = 1)
+        public async Task<IActionResult> ManageOrder()
         {
 
             List<OrderDetailsViewModel> orderDetailsVM = new List<OrderDetailsViewModel>();
 
-            List<OrderHeader> OrderHeaderList = await _db.OrderHeader.Where(o => o.Status == SD.StatusSubmitted || o.Status == SD.StatusInProcess).OrderByDescending(u => u.PickUpTime).ToListAsync();
+            List<OrderHeader> OrderHeaderList = await _db.OrderHeader
+                .Where(o => o.Status == SD.StatusSubmitted || o.Status == SD.StatusInProcess)
+                .OrderByDescending(u => u.PickUpTime).ToListAsync();
 
 
             foreach (OrderHeader item in OrderHeaderList)
@@ -113,8 +119,10 @@ namespace Spice.Areas.Customer.Controllers
             return View(orderDetailsVM.OrderBy(o => o.OrderHeader.PickUpTime).ToList());
         }
 
+        //pop up order details
         public async Task<IActionResult> GetOrderDetails(int Id)
         {
+            //create an object
             OrderDetailsViewModel orderDetailsViewModel = new OrderDetailsViewModel()
             {
                 OrderHeader = await _db.OrderHeader.Include(el => el.ApplicationUser).FirstOrDefaultAsync(m => m.Id == Id),
