@@ -24,6 +24,7 @@ namespace Spice.ViewComponenets
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
+            //get the user from database (user id == claims.value)
             var userFromDb = await _db.ApplicationUser.FirstOrDefaultAsync(u => u.Id == claims.Value);
 
             return View(userFromDb);

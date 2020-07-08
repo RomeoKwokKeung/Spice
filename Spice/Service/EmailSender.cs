@@ -11,11 +11,13 @@ namespace Spice.Service
     {
         public EmailOptions Options { get; set; }
 
+        //generate a constructor
         public EmailSender(IOptions<EmailOptions> emailOptions)
         {
             Options = emailOptions.Value;
         }
 
+        //write something in StartUp.cs
         public Task SendEmailAsync(string email, string subject, string message)
         {
             return Execute(Options.SendGridKey, subject, message, email);
@@ -23,6 +25,8 @@ namespace Spice.Service
 
         private Task Execute(string sendGridKey, string subject, string message, string email)
         {
+            //download send grid from Nuget package manager first
+            //pass Api key
             var client = new SendGridClient(sendGridKey);
             var msg = new SendGridMessage()
             {
@@ -31,6 +35,7 @@ namespace Spice.Service
                 PlainTextContent = message,
                 HtmlContent = message
             };
+            //send to client
             msg.AddTo(new EmailAddress(email));
             try
             {

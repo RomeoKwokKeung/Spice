@@ -215,6 +215,7 @@ namespace Spice.Areas.Customer.Controllers
             if (charge.Status.ToLower() == "succeeded")
             {
                 //email for successful order
+                //email address , subject + id , message
                 await _emailSender.SendEmailAsync(_db.Users.Where(u => u.Id == claim.Value).FirstOrDefault().Email, "Spice - Order Created " + detailCart.OrderHeader.Id.ToString(), " Order has been submitted successfully.");
 
                 detailCart.OrderHeader.PaymentStatus = SD.PaymentStatusApproved;

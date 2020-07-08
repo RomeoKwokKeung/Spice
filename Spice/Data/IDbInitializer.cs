@@ -7,6 +7,7 @@ namespace Spice.Data
 {
     public interface IDbInitializer
     {
+        //Initialize the admin account
         void Initialize();
     }
 }

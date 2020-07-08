@@ -42,12 +42,14 @@ namespace Spice
                 .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            //initialize the admin user
             services.AddScoped<IDbInitializer, DbInitializer>();
 
             //for stripe payment
             //also need to install Stripe.Net though NuGet Package Manager
             services.Configure<StripeSettings>(Configuration.GetSection("Stripe"));
 
+            //app.sendgrid.com
             services.AddSingleton<IEmailSender, EmailSender>();
             services.Configure<EmailOptions>(Configuration);
 
@@ -55,6 +57,7 @@ namespace Spice
             //download from nuget package manager - Microsoft AspNetCore Razor RuntimeCompliation
             services.AddRazorPages().AddRazorRuntimeCompilation();
 
+            //download facebook nuget package first
             services.AddAuthentication().AddFacebook(facebookOptions =>
             {
                 facebookOptions.AppId = "273380220348863";
@@ -69,7 +72,7 @@ namespace Spice
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        // add IDbInitializer dbInitializer
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IDbInitializer dbInitializer)
         {
             if (env.IsDevelopment())

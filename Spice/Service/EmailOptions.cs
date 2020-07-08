@@ -7,6 +7,9 @@ namespace Spice.Service
 {
     public class EmailOptions
     {
+        //app.sendgrid.com/
+        //add the api in json file
+        //create EmailSender.cs
         public string SendGridKey { get; set; }
     }
 }

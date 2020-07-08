@@ -22,8 +22,10 @@ namespace Spice.Areas.Customer.Controllers
         //dependency injection
         private readonly IEmailSender _emailSender;
         private readonly ApplicationDbContext _db;
+
         //only 2 records will be pasted on each page
         private int PageSize = 2;
+
         public OrderController(ApplicationDbContext db, IEmailSender emailSender)
         {
             _db = db;
@@ -163,6 +165,8 @@ namespace Spice.Areas.Customer.Controllers
             OrderHeader orderHeader = await _db.OrderHeader.FindAsync(OrderId);
             orderHeader.Status = SD.StatusCancelled;
             await _db.SaveChangesAsync();
+            //send email function, pass email, subject, message
+            //find the user who placed the order
             await _emailSender.SendEmailAsync(_db.Users.Where(u => u.Id == orderHeader.UserId).FirstOrDefault().Email, "Spice - Order Cancelled " + orderHeader.Id.ToString(), " Order has been cancelled successfully.");
 
             return RedirectToAction("ManageOrder", "Order");
@@ -212,7 +216,8 @@ namespace Spice.Areas.Customer.Controllers
                 {
                     if (searchEmail != null)
                     {
-                        user = await _db.ApplicationUser.Where(u => u.Email.ToLower().Contains(searchEmail.ToLower())).FirstOrDefaultAsync();
+                        user = await _db.ApplicationUser.Where(u => u.Email.ToLower()
+                                .Contains(searchEmail.ToLower())).FirstOrDefaultAsync();
                         OrderHeaderList = await _db.OrderHeader.Include(o => o.ApplicationUser)
                                                     .Where(o => o.UserId == user.Id)
                                                     .OrderByDescending(o => o.OrderDate).ToListAsync();
@@ -270,6 +275,7 @@ namespace Spice.Areas.Customer.Controllers
             orderHeader.Status = SD.StatusCompleted;
             await _db.SaveChangesAsync();
 
+            //email function
             await _emailSender.SendEmailAsync(_db.Users.Where(u => u.Id == orderHeader.UserId).FirstOrDefault().Email, "Spice - Order Completed " + orderHeader.Id.ToString(), " Order has been completed.");
 
             return RedirectToAction("OrderPickup", "Order");

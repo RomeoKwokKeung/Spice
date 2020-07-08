@@ -9,8 +9,10 @@ using System.Threading.Tasks;
 
 namespace Spice.Data
 {
+    //link to Interface
     public class DbInitializer : IDbInitializer
     {
+        //dependency injection
         private readonly ApplicationDbContext _db;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -29,6 +31,7 @@ namespace Spice.Data
             {
                 if (_db.Database.GetPendingMigrations().Count() > 0)
                 {
+                    //apply migration
                     _db.Database.Migrate();
                 }
             }
@@ -50,6 +53,8 @@ namespace Spice.Data
             //customer user will be created
             _roleManager.CreateAsync(new IdentityRole(SD.CustomerEndUser)).GetAwaiter().GetResult();
 
+            //create a default admin user
+            //only run it in the first time
             _userManager.CreateAsync(new ApplicationUser
             {
                 UserName = "admin@gmail.com",
@@ -60,8 +65,11 @@ namespace Spice.Data
                 //password
             }, "Admin123*").GetAwaiter().GetResult();
 
+            //after the user has been created
             IdentityUser user = await _db.Users.FirstOrDefaultAsync(u => u.Email == "admin@gmail.com");
 
+            //assign the role
+            //throw the user to the manager role
             await _userManager.AddToRoleAsync(user, SD.ManagerUser);
 
         }
